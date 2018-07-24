@@ -1,0 +1,243 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: Roboto Regular, Verdana;
+}
+
+body {
+    /*    border: 1px solid black;	*/
+    /*width: 800px;*/
+    /*margin: auto;*/
+}
+
+header > div > * {
+    display: inline-block;
+}
+
+header > div > button {
+    float: right;
+    vertical-align: center;
+}
+
+header button {
+    width: 100px;
+}
+
+h1 {
+    margin-left: 10px;
+    font-size: 14pt;
+    vertical-align: top;
+    color: #FFFFFF;
+}
+
+header div:nth-child(1) {
+//	background-color: green;
+    padding: 5px;
+    padding-bottom: 0px;
+    padding-top: 5px;
+}
+
+header div:nth-child(2) {
+//	background-color: red;
+    padding: 5px;
+    padding-bottom: 5px;
+    padding-top: 0px;
+}
+
+header {
+    padding: 0px;
+    position: fixed;
+    display: block;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+    border: 0px;
+    background: #2C2D3F;
+    color: #BBB;
+    box-shadow: 0 0 25px rgba(0,0,0,0.9);
+}
+
+header nav {
+    color: #000000;
+    background-color: #FFFFFF !important;
+    width: 25px !important;
+    height: 25px !important;
+    vertical-align: center !important;
+    content: "Hello";
+    background: linear-gradient(#D44C4C 50%, #2C2D3F 0);
+    background-size: 100% 10px;
+}
+
+button {
+    background: #D44C4C;
+    padding: 3px 7px;
+    margin: 1px;
+    color: #FFFFFF;
+    border: 0px;
+}
+
+main {
+    margin-top: 40px;
+    width: 80%;
+    padding-bottom: 100px;
+    margin: auto;
+    margin-top: 60px;
+}
+
+main > div > div {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+footer {
+    padding: 0px;
+    position: fixed;
+    width: 100%;
+    margin-bottom: 0px;
+    bottom: 0;
+    /*vertical-align:bottom;*/
+    /*display:inline-block;*/
+    border: 0px;
+    background: #444;
+    color: #FFFFFF;
+    font-size: 10pt;
+    text-shadow: 1px 1px #000; color: #EEEEEE;
+}
+
+footer div {
+    margin: 5px;
+}
+
+header > div > input {
+    text-align: center;
+    width: calc(100% - 120px);
+    border: 0px;
+    height: 25px;
+}
+
+ul {
+    display: none;
+    position: absolute;
+    margin-top: 20px;
+    list-style: none;
+    background-color: white;
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+li {
+    border: 1px solid black;
+    padding: 10px;
+    padding-left: 20px;
+}
+
+/*nav > div {background-color: aqua;}*/
+/*nav > div:hover {background-color: red;}
+/*nav > div:hover + ul {display: block;}*/
+/*nav > ul:hover {display: block;}*/
+nav:hover > ul {
+    display: block;
+}
+
+nav > ul > li:hover {
+    background-color: #D44C4C;
+    color: #FFFFFF;
+}
+
+main {
+    padding-top: 60px;
+    display: grid;
+}
+
+.layout_table > *{
+    display: grid;
+    border: 1px solid black;
+}
+
+textarea {
+    resize: none;
+    border: 0px;
+    padding: 10px;
+    background: #FFF;
+    width: 100%;
+}
+
+.data_table > div{
+    border: 1px solid black;
+}
+
+/** {*/
+    /*padding: 0;*/
+    /*margin: 0;*/
+/*}*/
+
+/*body {*/
+    /*border: 1px solid black;*/
+    /*width: 800px;*/
+    /*margin: auto;*/
+/*}*/
+
+/*header > div {*/
+    /*border-bottom: 1px solid black;*/
+/*}*/
+
+/*header > div > * {*/
+    /*display: inline-block;*/
+/*}*/
+
+/*header > div > button {*/
+    /*float: right;*/
+/*}*/
+
+/*header > button {*/
+    /*float: right;*/
+/*}*/
+
+/*!*header > div {*!*/
+    /*!*width: 100%;*!*/
+    /*!*display: inline-block;*!*/
+/*!*}*!*/
+
+/*header > div > input {*/
+    /*text-align: center;*/
+/*}*/
+
+/*ul {*/
+    /*display: none;*/
+    /*position: absolute;*/
+    /*margin-top: 20px;*/
+    /*list-style: none;*/
+    /*background-color: white;*/
+    /*cursor: pointer;*/
+    /*border: 1px solid black;*/
+
+/*}*/
+
+/*li {*/
+    /*border: 1px solid black;*/
+    /*padding: 0 20px;*/
+/*}*/
+
+/*!*nav > div {background-color: aqua;}*!*/
+/*!*nav > div:hover {background-color: red;}*!*/
+/*!*nav > div:hover + ul {display: block;}*!*/
+/*!*nav > ul:hover {display: block;}*!*/
+/*nav:hover > ul { display: block; }*/
+
+/*main {*/
+    /*padding: 40px;*/
+    /*display: grid;*/
+/*}*/
+
+/*.layout_table > *{*/
+    /*display: grid;*/
+    /*border: 1px solid black;*/
+/*}*/
+
+/*main > * {*/
+    /*display: block;*/
+/*}*/
+/*!*textarea {*!*/
+    /*!*height: 69px;*!*/
+    /*!*width: 255px;*!*/
+/*!*}*!*/

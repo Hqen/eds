@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="link-group">
+        <a class="route" href="/orange">orange</a>
+        <a class="route" href="/tomato">tomato</a>
+        <a class="route" href="/lol" onclick="asd()">lol</a>
+    </div>
+    <div class="maim"></div>
+    <script>
+        document.body.querySelectorAll('.route')
+            .forEach( link => link.addEventListener('click', link_clickHandler) );
+
+        function link_clickHandler( event ){
+            event.preventDefault();
+
+            let path = event.target.href;
+
+            window.history.pushState({route: path}, "some title", path);
+        }
+        function asd() {
+            alert(123);
+            const element = document.createElement('h1');
+            document.body.appendChild(element);
+        }
+        // window.addEventListener('popstate', window_popStateHandler);
+        //
+        // function window_popStateHandler( event ){
+        //     if(event.state){
+        //         console.log(event.state)
+        //     }
+        //
+        //     console.log(event);
+        // }
+    </script>
+    <h1>Пример работы AJAX</h1>
+    <script src="error_log.js"></script>
+
+
+</body>
+</html>
