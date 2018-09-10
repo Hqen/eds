@@ -7,17 +7,24 @@ import {application} from "../index.js";
 import {update_table} from "../helpers/help.js";
 import {new_GUID} from "../helpers/help.js";
 
+//TODO добавить функционал:
+//TODO имя таблицы
+//TODO дополнительные кнопки
+//TODO table_name не нужен
+//TODO добавить обработку массивов инсёртов и селектов
+//TODO добавить возможность передавать в table_click функцию(для popup)
+
 //жесть
 //TODO сохранение не работает!
-//TODO при закрытии всплывающего окна сохраняются введённые значения
+//TODO при закрытии всплывающего окна сохраняются введённые значения (очистку добавить)
 let sel_object;
 export class data_table extends control {
-    constructor(query, table_name, prototype, page) {
+    constructor(data) {
         super();
-        this._page_next = page;
-        this._table_name = table_name;
-        this._query = query;
-        this._prototype = prototype;
+        this._table_click = data.click;
+        this._table_name = data.table_name;
+        this._query = data.query;
+        this._prototype = data.prototype;
         this._max_count = 50;//TODO Выборка из system
         this._table_items = [];//массив из table_item
         this._id = 0;
@@ -47,12 +54,12 @@ export class data_table extends control {
         let sel = this.sel;
         for (let i = 0; i < sel.length; i++) {
             let res = ac(this._prototype, sel[i]);
-            this.add_item(undefined, res.elems, res.param, this._page_next);
+            this.add_item(undefined, res.elems, res.param, this._table_click);
         }
     }
 
     select() {
-        let sel = alasql(this._query);
+        let sel = alasql(this._query.select);
         console.log(sel);
         return sel;
     }
@@ -68,21 +75,20 @@ export class data_table extends control {
         let buttons = {
             cancel: new button("Отмена", true, hide_popup, this.popup),
             //TODO добавить
-            enter: new button("Сохранить", true,
-                this.save, this.popup, this, this.add_item, this._page_next)
+            enter: new button("Сохранить", true, this.save, this)
         };
         this.popup.addAll(buttons);
         this.popup.draw2();
     }
-
-    save(popup, dad, add_item, page) {
-        let inputs = popup.element.querySelectorAll("input");
+    //TODO переписать на query.input
+    save(dad) {
+        let inputs = dad.popup.element.querySelectorAll("input");
         let dataa = [];
         for (let i = 0; i < inputs.length; i++) {
             dataa[i] = inputs[i].value;
         }
         let res = ac(dad._prototype, dataa, "A");
-        dad.add_item(dad.element, res.elems, res.param, page, dad._table_name);
+        dad.add_item(dad.element, res.elems, res.param, dad._table_click, dad._table_name);
 
         let i = 0;
         let k = 0;
@@ -117,15 +123,17 @@ export class data_table extends control {
             }
             return data;
         }
-        hide_popup(popup);
+        hide_popup(dad.popup);
     }
 
-    add_item(dad, elems, param, page) {
+    add_item(dad, elems, param, click) {
         let ti = new table_item(elems, param);
         ti.draw();
         //ti = add_buttons_and_return_ti(ti, dad);
         ti.element.onclick = () => {
-            application.open(page, ti.GUID);
+            //TODO пробный
+            click(ti.GUID);
+            //application.open(page, ti.GUID);
             console.log(ti);
         };
         console.log("Кнопка добавлена");

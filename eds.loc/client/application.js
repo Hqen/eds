@@ -18,7 +18,7 @@ class Application {
         //this.back_button = undefined;
         //this.page_list[this.action].clear = undefined;
         this.sync = new SyncService();
-        this.start_sync();
+        //TODO раскомментить this.start_sync();
         console.log("Sync status: " + this.sync.status);
 }
     start_sync() {
@@ -40,19 +40,23 @@ class Application {
             name: page_obj.page_name,
         };
     }
-
+    //2-й параметр только объект для возможности обращения по data.GUID и исключения null
     open(title, params) {
         let name = this.page_list[this.action].name;
         //this.page_list[this.action].page.data = params;
         let bb;
-        if (title === "PAGE_START")
+        if (title === "PAGE_START")//TODO заменить проверку на bb == false
             topPanel.refreshBB();
         if (title !== name)
-            bb = () => application.open(name);
+            bb = () => application.open(name);//TODO вытащить параметры из name
         this.page_list[this.action].page.clear();
         this.action = title;
         let page = this.page_list[this.action].page;
-        //TODO переделать if в адекватное состояние
+        if (page === undefined) {
+            alert("Страница не создана!");
+            return;
+        }
+        //TODO переделать if в проверку на bb == false
         if (title !== "PAGE_SETTING_PRIVATE_KEY" && title !== "PAGE_LOGIN") {
             topPanel.caption = page.caption;
             topPanel._back_button = page.back_button;

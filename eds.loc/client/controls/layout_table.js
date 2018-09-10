@@ -1,8 +1,8 @@
 import control from "./control.js";
-import {application} from "../index";
+import {application} from "../index.js";
 
 //TODO Перенести логику управления сюда, а остальные классы наследовать от этого
-class layout_table extends control {
+export class layout_table extends control {
     constructor() {
         super();
     }

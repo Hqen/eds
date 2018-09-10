@@ -3,34 +3,33 @@ import {data_table} from "../controls/data_table.js";
 import data_memo from "../controls/data_memo.js";
 import label from "../controls/label.js";
 import {redact_table} from "../controls/redact_table.js";
+import button from "../controls/button.js";
 
 export function PAGE_CUSTOMER_DESCRIPTION() {
     let page = {
         page_name: "PAGE_CUSTOMER_DESCRIPTION",
-        caption: "Список объектов",
+        caption: "Описание заказчика",
         back_button: true,
+        search: false,
     };
 
     application.registryPage(page, init);
     function init(page, data) {
         let controls = {
-            input: new data_memo(
-                "Список всех объектов. Нажмите на нужный, чтоюы посмотреть подробности... Или добавьте новый",
-                false
-            ),
+            rt: new redact_table(),
+            button: new button("Список оборудования", true,
+                ()=> application.open("PAGE_CUSTOMER_EQUIPMENT", data)),
+            button2: new button("Список задач", true,
+                ()=> application.open("PAGE_TASK_LIST", data)),
+            dt: new data_table({
+                name: "Действующие контракты",
+                button: "Добавить",
+                query: {
+                    select: [`SELECT * FROM tab_contract, tab_customer WHERE tab_contract.GUID_customer = ${data.GUID}`]
+                },
+                click: (param) => application.open("PAGE_CUSTOMER_CONTRACT_EQUIPMENT", param)
+            })
         };
-        console.log(data);
-
-        let pr = ["название учреждения", "город", "адрес"];
-        let query = `SELECT * FROM tab_customer WHERE GUID = '${data}'`;
-        let d= ['title', 'town', 'address'];
-        let rt = new redact_table(data, query, "tab_customer", pr, d);
-        //let query = "";
-        //let lt = new data_table("tab_customer", pr);
-        // lt.add_item(undefined, c.d, c.b);
-        // lt.add_item(undefined, p.a, p.c);
-
-        page.addAll({rt});
-        //page.addAll({lt});
+        page.addAll(controls);
     }
 }

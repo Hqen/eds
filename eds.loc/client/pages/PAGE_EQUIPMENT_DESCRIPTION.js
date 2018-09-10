@@ -14,10 +14,23 @@ export function PAGE_EQUIPMENT_DESCRIPTION() {
     application.registryPage(page, init);
     function init(page, data) {
         let controls = {
-            input: new data_memo(
-                "Список всех объектов. Нажмите на нужный, чтоюы посмотреть подробности... Или добавьте новый",
-                false
-            ),
+            rt: new redact_table({
+                prototype: [
+                    "Название аппарата",
+                    "Модель аппарата",
+                    "Категория оборудования"
+                ],
+                query: {
+                    select: "",
+                    insert: ""
+                }
+            }),
+            label: new label("Составные узлы аппарата и норму времени на их обслуживание смотри в таблице ниже. Чтобы посмотреть список работ, нажмите на узле"),
+            dt: new data_table({
+                prototype: [
+                    //TODO заполнение таблицы
+                ]
+            })
         };
         console.log(data);
 
