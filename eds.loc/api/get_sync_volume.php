@@ -10,7 +10,7 @@ if(!isset($_POST['table_name'], $_POST['count'], $_POST['GUID_records'])) {
 $qres = $dbConnect->query("SELECT 'time_update' FROM 'server_transact' WHERE 'GUID' = " . "'" . $_GET['last_GUID'] ."'");
 $tures = $qres->fetch_assoc();
 $tu = $tures['time_update'];
-$d = $dbConnect->query("SELECT * FROM 'server_transact' WHERE 'time_update' > '{$tu}'");
+$d = $dbConnect->query("SELECT * FROM 'server_transact' ORDER BY 'time_update' > '{$tu}'");
 $data = $d->fetch_assoc();
 send(RESULT_OK, $d, 10);
 
