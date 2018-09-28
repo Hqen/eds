@@ -41,16 +41,17 @@ function sql_field_type($table_name, $field_name) {
     return -1;
 }
 
-$_GET['table_name'] = 'tab_customer';
-$json_str = '{
-	"query_type":"replace",
-	"record":{
-		"GUID":"216471f5-5a53-40f2-92f4-c1414cb7241a",
-		"title":"ГБУЗ ТО ОКБ №2",
-		"town":"Тюмень",
-		"address":"Мельникайте, 66"
-	}
-}';
+//$_GET['table_name'] = 'tab_customer';
+//$json_str = '{
+//	"query_type":"replace",
+//	"record":{
+//		"GUID":"216471f5-5a53-40f2-92f4-c1414cb7241a",
+//		"title":"ГБУЗ ТО ОКБ №2",
+//		"town":"Тюмень",
+//		"address":"Мельникайте, 66"
+//	}
+//}';
+$json_str = $_POST[];
 $json_obj = json_decode($json_str);
 
 $table_name = $_GET['table_name'];
@@ -78,12 +79,12 @@ if($json_obj->query_type == 'replace') {
     $dbConnect->query($query_str);
 }
 
-
-function send($error, $public_key) {
-    $public_key ='1C1F3EC37D7D8DC43686110BEA9CBBB8';
-    $res = [];
-    $res['public_key'] = $public_key;
-    $res['error'] = $error;
-    echo json_encode($res);
-    exit();
-}
+//
+//function send($error, $public_key) {
+//    $public_key ='1C1F3EC37D7D8DC43686110BEA9CBBB8';
+//    $res = [];
+//    $res['public_key'] = $public_key;
+//    $res['error'] = $error;
+//    echo json_encode($res);
+//    exit();
+//}
