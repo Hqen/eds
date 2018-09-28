@@ -10,7 +10,7 @@
 import page from "./controls/page.js";
 import {topPanel, application} from "./index.js";
 import SyncService from "./SyncService.js";
-
+//TODO Task в асинхронных функциях
 class Application {
     constructor() {
         this.page_list = [];
@@ -18,7 +18,7 @@ class Application {
         //this.back_button = undefined;
         //this.page_list[this.action].clear = undefined;
         this.sync = new SyncService();
-        //TODO раскомментить this.start_sync();
+        this.start_sync();
         console.log("Sync status: " + this.sync.status);
 }
     start_sync() {

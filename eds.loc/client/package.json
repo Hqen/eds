@@ -1,0 +1,20 @@
+{
+  "name": "eds",
+  "version": "1.0.0",
+  "description": "web app eds group",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "webpack -p",
+    "watch": "webpack --watch"
+  },
+  "author": "",
+  "license": "ISC"
+}
