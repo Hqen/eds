@@ -51,8 +51,8 @@ function sql_field_type($table_name, $field_name) {
 //		"address":"Мельникайте, 66"
 //	}
 //}';
-$json_str = $_POST[];
-$json_obj = json_decode($json_str);
+
+$json_obj = json_decode($_POST['param']);
 
 $table_name = $_GET['table_name'];
 

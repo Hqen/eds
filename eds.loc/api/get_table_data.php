@@ -29,10 +29,10 @@ for ($i = 0; $i < $index; $i++) {
 
 send(RESULT_OK,$res);
 
-function send($error, $data, $public_key, $defect_GUID) {
+function send($error, $data, $public_key = 0, $defect_GUID = 0) {
     $res = [];
     $res['records'] = $data;
-    $res['record_count'] = count($data);
+    $res['record_count'] = $data->length;
     $res['defect_GUID'] = $defect_GUID;
     $res['public_key'] = $public_key;
     $res['error'] = $error;

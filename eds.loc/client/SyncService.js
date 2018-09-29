@@ -1,6 +1,7 @@
 "use strict";
 import {get_AJAX_JSON} from "./helpers/help.js";
 import {system} from "./system.js";
+import requestTo from "./helpers/Requests.js";
 
 class SyncService {
     constructor(){
@@ -37,11 +38,10 @@ class SyncService {
     //Проверка на наличие новых записей
     async sync_server_transact() {
         return await this.transact(
-            async () => {
+            () => {
                 let GUID = alasql("SELECT TOP 1 GUID FROM server_transact ORDER BY DESC");
                 let body = `mail=${system.mail}&md_encryption_seed=${system.encryption_seed}&last_GUID=${GUID}&count=30`;
-                let c = await fetch("/get_sync_data.php?" + body);
-                return c;
+                return fetch("/get_sync_data.php?" + body);
             }
         );
     }
@@ -49,16 +49,19 @@ class SyncService {
     //Перенос из локального транзакта в локальные таблички
     async get_server_record() {
         return await this.transact(
-            async () => {
+            () => {
                 let GUID_records = JSON.stringify(alasql("SELECT GUID FROM client_transact"));
 
-                let body = `mail=${system.mail}&md_encryption_seed=${system.encryption_seed}&count=50&GUID_records=${GUID_records}`;
-                //fetch("/get_sync_data.php?" + body);
-                let res = await fetch("/get_sync_data.php", {
-                    method: "POST",
-                    body: body
-                });
-                return res;
+                return fetch(requestTo(
+                    'get_sync_data.php',
+                    {
+                        mail: system.mail,
+                        md_encryption_seed:system.encryption_seed,
+                        count: 50,
+                        GUID_records: GUID_records
+                    },
+                    'POST'
+                ));
             }
         );
     }
@@ -78,7 +81,7 @@ class SyncService {
     async transact(callback) {
         this._status = "RUN";
         let q = await callback();
-        let res = q.json();
+        let res = await q.json();
         console.log(this.status);
         this._last_run = Date();
         this._status = "IDLE";
