@@ -18,6 +18,7 @@ class top_panel extends control {
         let m = new menu();
         let sp = new search_panel();
         this.captionElem = this.create('h1', {},'a');
+        this.syncElem = this.create('span', {}, this.sync_progress);
         if (this._back_button)
             this.backElement = this.create('button', {}, 'back');
         m.draw();
@@ -27,7 +28,7 @@ class top_panel extends control {
             'div',
             {},
             m.element,
-            this.sync_progress, this.captionElem, this.backElement
+            this.syncElem, this.captionElem, this.backElement
         );
         //TODO поменять местоми кнопки на адекватном макете
         this._element = this.create('header', {}, this.container, this.search_panel);
@@ -54,6 +55,13 @@ class top_panel extends control {
         this._caption = newCaption;
         if (this._element !== undefined && this._caption !== undefined) {
             this.captionElem.textContent = this._caption;
+        }
+    }
+
+    set sync_prog(newProg) {
+        this.sync_progress = newProg;
+        if (this._element !== undefined) {
+            this.syncElem.textContent = this.sync_progress;
         }
     }
 }

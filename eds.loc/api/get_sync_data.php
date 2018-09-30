@@ -8,8 +8,9 @@ if(!isset($_GET['mail'], $_GET['md_encryption_seed'], $_GET['last_GUID'], $_GET[
     exit();
 }
 $recordCount = $sync['max_sync_record_count'];
-if ($recordCount == 0) {
-    send(ERR_UNKNOWN, 0, 0);
+$count = ($_GET['count'] < $recordCount) ? $_GET['count'] : $recordCount;
+if ($count == 0) {
+    send(RESULT_OK, 0, 0);
 }
 $qres_query = "SELECT 'time_update' FROM 'server_transact' WHERE 'GUID' = '" . $_GET['last_GUID'] ."'";
 if (!($qres = $dbConnect->query($qres_query))) {
@@ -18,7 +19,7 @@ if (!($qres = $dbConnect->query($qres_query))) {
 
 $tures = $qres->fetch_assoc();
 $tu = $tures['time_update'];
-$d = $dbConnect->query("SELECT * FROM 'server_transact' WHERE 'time_update' > '{$tu}' ORDER BY '{$tu}'LIMIT {$sync}");
+$d = $dbConnect->query("SELECT * FROM 'server_transact' WHERE 'time_update' > '{$tu}' ORDER BY '{$tu}'LIMIT {$count}");
 $data = $d->fetch_assoc();
 send(RESULT_OK, $data);
 
@@ -31,6 +32,8 @@ function send($error, $data, $record_count = 0) {
     $res['record_count'] = count($data);
     if ($res['record_count'] != 0) {
         $res['records'] = $data;
+    } else {
+        $res['records'] = [];
     }
     $res['error'] = $error;
     echo json_encode($res);

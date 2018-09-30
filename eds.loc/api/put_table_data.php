@@ -42,16 +42,17 @@ function sql_field_type($table_name, $field_name) {
 }
 
 //$_GET['table_name'] = 'tab_customer';
-//$json_str = '{
-//	"query_type":"replace",
-//	"record":{
-//		"GUID":"216471f5-5a53-40f2-92f4-c1414cb7241a",
-//		"title":"ГБУЗ ТО ОКБ №2",
-//		"town":"Тюмень",
-//		"address":"Мельникайте, 66"
-//	}
-//}';
-
+//$json_str =
+echo'{
+	"query_type":"replace",
+	"record":{
+		"GUID":"216471f5-5a53-40f2-92f4-c1414cb7241a",
+		"title":"ГБУЗ ТО ОКБ №2",
+		"town":"Тюмень",
+		"address":"Мельникайте, 66"
+	}
+}';
+exit();
 $json_obj = json_decode($_POST['param']);
 
 $table_name = $_GET['table_name'];

@@ -19,9 +19,11 @@ export default function requestTo(to, dataObj, method) {
     }
     return new Request(req, init);
 }
-//(async () => {
+
+//функция возвращает json
+// (async () => {
 //        let resp = await fetch(requestTo("put_table_data.php", {a: 1, b: "asd"}, "POST"));
 //        let result = await resp.json();
 //        console.log(result);
 //    }
-//)();
+// )();
