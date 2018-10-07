@@ -15,7 +15,7 @@ export function PAGE_CUSTOMER_CONTRACT_EQUIPMENT() {
     function init(page) {
         let controls = {
             input: new data_memo(
-                "Список всех объектов. Нажмите на нужный, чтоюы посмотреть подробности... Или добавьте новый",
+                "Список всех объектов. Нажмите на нужный, чтобы посмотреть подробности... Или добавьте новый",
                 false
             ),
             dt: new data_table({
@@ -23,7 +23,7 @@ export function PAGE_CUSTOMER_CONTRACT_EQUIPMENT() {
                 button: "Добавить объект",
                 prototype: ["название учреждения", "город", "адрес"],
                 query: {
-                    select: "SELECT GUID, title, town FROM tab_customer"
+                    select: ["SELECT GUID, title, town FROM tab_customer"]
                 },
                 click: (param) => application.open("PAGE_CUSTOMER_DESCRIPTION", param)
             })

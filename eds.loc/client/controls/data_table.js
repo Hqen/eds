@@ -22,6 +22,7 @@ export class data_table extends control {
     constructor(data) {
         super();
         this._table_click = data.click;
+        this._name = data.name;
         this._table_name = data.table_name;
         this._query = data.query;
         this._prototype = data.prototype;
@@ -83,47 +84,48 @@ export class data_table extends control {
     //TODO переписать на query.input
     save(dad) {
         let inputs = dad.popup.element.querySelectorAll("input");
+
         let dataa = [];
         for (let i = 0; i < inputs.length; i++) {
             dataa[i] = inputs[i].value;
         }
         let res = ac(dad._prototype, dataa, "A");
-        dad.add_item(dad.element, res.elems, res.param, dad._table_click, dad._table_name);
+        dad.add_item(dad.element, res.elems, res.param, dad._table_click);
 
-        let i = 0;
-        let k = 0;
-        let data = [];
-        if ('GUID' in data || data.GUID === undefined) {
-            data[i] = Date.now();
-            i++;
-            data[i] = false;
-            i++;
-            data[i] = new_GUID();
-            i++;
-        }
-        for (k = i; i < dataa.length + k; i++) {
-            data[i] = dataa[i - k];
-        }
-        let indexes = data_for_update();
-        let ress = {};
-        for (let j = 0; j < indexes.length; j++) {
-            ress[indexes[j]] = data[j];
-        }
-        alasql(`INSERT INTO ${dad._table_name} VALUES ?`, [ress]);
-        let a = alasql(`SELECT * FROM ${dad._table_name} WHERE GUID = '${ress.GUID}'`);
-        console.log("Данные записаны: ");
-        console.log(a);
-        function data_for_update() {
-            let c = localStorage['lsdb.' + dad._table_name];
-            let b = JSON.parse(c);
-            let n =  b.columns;
-            let data = [];
-            for (let i = 0; i < n.length; i++) {
-                data[i] = n[i].columnid;
-            }
-            return data;
-        }
-        hide_popup(dad.popup);
+        // let i = 0;
+        // let k = 0;
+        // let data = [];
+        // if ('GUID' in data || data.GUID === undefined) {
+        //     data[i] = Date.now();
+        //     i++;
+        //     data[i] = false;
+        //     i++;
+        //     data[i] = new_GUID();
+        //     i++;
+        // }
+        // for (k = i; i < dataa.length + k; i++) {
+        //     data[i] = dataa[i - k];
+        // }
+        // let indexes = data_for_update();
+        // let ress = {};
+        // for (let j = 0; j < indexes.length; j++) {
+        //     ress[indexes[j]] = data[j];
+        // }
+        // alasql(`INSERT INTO ${dad._table_name} VALUES ?`, [ress]);
+        // let a = alasql(`SELECT * FROM ${dad._table_name} WHERE GUID = '${ress.GUID}'`);
+        // console.log("Данные записаны: ");
+        // console.log(a);
+        // function data_for_update() {
+        //     let c = localStorage['lsdb.' + dad._table_name];
+        //     let b = JSON.parse(c);
+        //     let n =  b.columns;
+        //     let data = [];
+        //     for (let i = 0; i < n.length; i++) {
+        //         data[i] = n[i].columnid;
+        //     }
+        //     return data;
+        // }
+        // hide_popup(dad.popup);
     }
 
     add_item(dad, elems, param, click) {
@@ -238,10 +240,5 @@ function ac(prot, sel, a) {
         elems[i] = elems[i].element;
         i++;
     });
-    // for (let i = 0; i < prot.length * 2; i++) {
-    //     elems[i] = prot[i];
-    //     i++;
-    //     elems[i] = sel[i];
-    // }
     return {elems, param}
 }

@@ -22,11 +22,20 @@ class SyncService {
     //TODO Работает раз в 3 минуты
     update_tables() {
         this.sync_server_transact();
+        let count = alasql("SELECT COUNT(GUID) FROM server_transact");
+        if (count[0]["COUNT(GUID)"] !== 0)
+
         console.log();
 
             //alasql(`INSERT INTO server_transact VALUES ?`, [res["records"]]);
-        this.update_tables();
 
+    }
+
+    insert_local() {
+        let record = alasql("SELECT * FROM server_transact LIMIT 1");
+        let tn = record[0]["table_name"];
+        let records = record
+        alasql(`SELECT * FROM ${tn} VALUES ?`, []);
     }
 
     stop() {
@@ -73,11 +82,12 @@ class SyncService {
                     ));
                     let data = await sd.json();
                     last_GUID = data.records[data.record_count - 1];
+                    rCount -= data.records.record_count;//возможно надо убрать минус
                     alasql(`INSERT INTO server_transact VALUES ?`, [data["records"]])
                 }
             }
-            let body = `mail=${system.mail}&md_encryption_seed=${system.encryption_seed}&last_GUID=${GUID}&count=30`;
-            return fetch("/get_sync_data.php?" + body);
+            // let body = `mail=${system.mail}&md_encryption_seed=${system.encryption_seed}&last_GUID=${GUID}&count=30`;
+            // return fetch("/get_sync_data.php?" + body);
             }
         );
     }
@@ -94,7 +104,7 @@ class SyncService {
     send_client_record() {
         this.transact(
             () => {
-                let GUID_records = alasql("SELECT * FROM client_transact");
+                let GUID_records = alasql("SELECT * FROM client_transact LIMIT 1");
 
                 return fetch(requestTo(
                     'put_table_data.php',

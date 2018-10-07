@@ -43,16 +43,16 @@ function sql_field_type($table_name, $field_name) {
 
 //$_GET['table_name'] = 'tab_customer';
 //$json_str =
-echo'{
-	"query_type":"replace",
-	"record":{
-		"GUID":"216471f5-5a53-40f2-92f4-c1414cb7241a",
-		"title":"ГБУЗ ТО ОКБ №2",
-		"town":"Тюмень",
-		"address":"Мельникайте, 66"
-	}
-}';
-exit();
+//echo'{
+//	"query_type":"replace",
+//	"record":{
+//		"GUID":"216471f5-5a53-40f2-92f4-c1414cb7241a",
+//		"title":"ГБУЗ ТО ОКБ №2",
+//		"town":"Тюмень",
+//		"address":"Мельникайте, 66"
+//	}
+//}';
+//exit();
 $json_obj = json_decode($_POST['param']);
 
 $table_name = $_GET['table_name'];
@@ -78,14 +78,15 @@ $query_str = "INSERT INTO `".$_GET['table_name']."` (".$fields.") VALUES (".$val
 if($json_obj->query_type == 'replace') {
     $dbConnect->query("DELETE FROM '".$_GET['table_name']."' WHERE 'GUID' = '".$json_obj->record->GUID."'");
     $dbConnect->query($query_str);
+    $dbConnect->query("INSERT INTO `server_transact` (".$fields.") VALUES (".$values.")");
+    send(RESULT_OK);
 }
+send(ERR_UNKNOWN);
 
-//
-//function send($error, $public_key) {
-//    $public_key ='1C1F3EC37D7D8DC43686110BEA9CBBB8';
-//    $res = [];
-//    $res['public_key'] = $public_key;
-//    $res['error'] = $error;
-//    echo json_encode($res);
-//    exit();
-//}
+function send($error) {
+    $public_key ='1C1F3EC37D7D8DC43686110BEA9CBBB8';
+    $res['public_key'] = $public_key;
+    $res['error'] = $error;
+    echo json_encode($res);
+    exit();
+}
