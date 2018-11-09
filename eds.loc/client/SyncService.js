@@ -20,6 +20,7 @@ class SyncService {
     }
     //TODO Переименовать проверяет наличие записей каждые 180 сек || значение в системе
     //TODO Работает раз в 3 минуты
+    //TODO Вызывается до того как загрузится страница
     update_tables() {
         this.sync_server_transact();
         let count = alasql("SELECT COUNT(GUID) FROM server_transact");

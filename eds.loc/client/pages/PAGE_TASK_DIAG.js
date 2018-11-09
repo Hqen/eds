@@ -24,7 +24,7 @@ export function PAGE_TASK_DIAG() {
             checkbox1: new checkbox(true, false, "Только просроченные"),
             checkbox2: new checkbox(true, true, "Только мои задачи"),
             checkbox3: new checkbox(true, false, "Только на сегодня"),
-            dt: new data_table({
+            dt: new data_table2({
                 table_name: "",
                 name: "Задача на диагностику оборудования",
                 prototype:

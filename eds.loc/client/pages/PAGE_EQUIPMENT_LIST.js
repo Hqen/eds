@@ -24,7 +24,7 @@ export function PAGE_EQUIPMENT_LIST() {
         let pr = ["тип", "название", "время"];
         let table_name = "tab_equipment";
         let query = "SELECT GUID, title, town FROM " + table_name;
-        let dt = new data_table(query, table_name, pr, "PAGE_EQUIPMENT_DESCRIPTION");
+        let dt = new data_table2(query, table_name, pr, "PAGE_EQUIPMENT_DESCRIPTION");
         page.addAll({dt});
     }
 }

@@ -33,7 +33,7 @@ export function PAGE_TASK_SERVICE() {
                 query: {select: "SELECT  FROM " + this.table_name},
                 click: "PAGE_TASK_DIAG_DESCRIPTION"
             }),
-            dt2: new data_table({
+            dt2: new data_table2({
                 name: "",
                 button: "Открыть акт",
                 click: "PAGE_TASK_SERVICE_DESCRIPTION",

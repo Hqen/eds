@@ -26,7 +26,7 @@ export function PAGE_EQUIPMENT_DESCRIPTION() {
                 }
             }),
             label: new label("Составные узлы аппарата и норму времени на их обслуживание смотри в таблице ниже. Чтобы посмотреть список работ, нажмите на узле"),
-            dt: new data_table({
+            dt: new data_table2({
                 prototype: [
                     //TODO заполнение таблицы
                 ]

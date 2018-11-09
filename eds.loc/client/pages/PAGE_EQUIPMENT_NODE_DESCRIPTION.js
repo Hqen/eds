@@ -30,7 +30,7 @@ export function PAGE_EQUIPMENT_NODE_DESCRIPTION() {
                     select: "SELECT GUID, title, town FROM " + this.table_name},
 
             }),
-            dt2: new data_table({
+            dt2: new data_table2({
                 name: "Признаки отказа",
                 button: "Добавить признак",
                 click: "PAGE_POPUP_TASK_DIAG_FAILURE",
@@ -51,7 +51,7 @@ export function PAGE_EQUIPMENT_NODE_DESCRIPTION() {
                             tab_equipment_node_group.GUID=tab_equipment_node.GUID_group AND
                             tab_equipment_failure_sign.GUID_task_equipment=?`},
             }),
-            dt3: new data_table({
+            dt3: new data_table2({
                 name: "Задания",
                 button: "Добавить задание для проверки",
                 prototype: ["Аппарат наименование, модель",
