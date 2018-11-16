@@ -24,7 +24,7 @@ export class popup_view extends control {
             this._data[key] = controls[key];
             this._data[key].draw();
             ///////////////////////////////////////////////
-            this._data[key] = this._data[key].element;//
+            this._data[key] = this._data[key]._element;//
             // this._data[this.position] = controls[key];
             // this._data[this.position].draw();
             // // this.dad.appendChild(this._data[this.position].element);
@@ -33,7 +33,7 @@ export class popup_view extends control {
     }
     draw2() {
         Object.keys(this._data).forEach(key => {
-            this.element.appendChild(this._data[key]);
+            this._element.appendChild(this._data[key]);
         });
     }
     insert(control, index) {

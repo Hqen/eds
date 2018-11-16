@@ -40,7 +40,7 @@ function asd() {
 function print(vals) {
     Object.keys(vals).forEach(key => {
         console.log(vals[key]);
-        console.log(vals[key].element);
+        console.log(vals[key]._element);
     });
 }
 

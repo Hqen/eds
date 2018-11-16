@@ -4,6 +4,7 @@ import data_memo from "../controls/data_memo.js";
 import label from "../controls/label.js";
 import {redact_table} from "../controls/redact_table.js";
 import button from "../controls/button.js";
+import {update_table} from "../helpers/help.js";
 
 export function PAGE_CUSTOMER_DESCRIPTION() {
     let page = {
@@ -17,42 +18,38 @@ export function PAGE_CUSTOMER_DESCRIPTION() {
     function init(page, data) {
         let controls = {
             rt: new redact_table({
-                name: "Список объектов",
+                data: data,
+                name: "Свойства объекта",
                 tab: {
-                    select_query: 'SELECT * FROM tab_customer',
-                    insert_query: [`INSERT (GUID, title, town) INTO tab_customer VALUE ?`],
-
+                    select_query: `SELECT * FROM tab_customer WHERE GUID = ${data.GUID}`,
+                    insert_queries: [
+                        (data)=>update_table('tab_customer', 'GUID, is_delete, time_update, title, town, address', data),
+                        // `INSERT (GUID, is_delete, time_update, title, town, address) INTO tab_customer VALUE ?`,
+                        // `INSERT (GUID) INTO client_transact VALUE ?`
+                    ],
                     select_prototype: {
-                        tab_customer: {
-                            title: 'Заголовок',
-                            address: 'Адрес',
-                            town: 'Город'
-                        },
-                        tab_test: {
-                            test: 'aaa',
-                            test2: 'aa2',
-                            test4: 'Ничегошеньки'
-                        }
+                        title: 'Заголовок',
+                        town: 'Город',
+                        address: 'Адрес'
                     },
-                    insert_prototype:
-                        {
-
-                        }
                 },
-                query: ``
             }),
             button: new button("Список оборудования", true,
                 ()=> application.open("PAGE_CUSTOMER_EQUIPMENT", data)),
             button2: new button("Список задач", true,
                 ()=> application.open("PAGE_TASK_LIST", data)),
-            // dt: new data_table({
-            //     name: "Действующие контракты",
-            //     button: "Добавить",
-            //     query: {
-            //         select: [`SELECT * FROM tab_contract, tab_customer WHERE tab_contract.GUID_customer = ${data.GUID}`]
-            //     },
-            //     click: (param) => application.open("PAGE_CUSTOMER_CONTRACT_EQUIPMENT", param)
-            // })
+            dt: new data_table({
+                name: "Действующие контракты",
+                button_text: "Добавить контракт",
+                tab: {
+                    select_prototype: {
+
+                    },
+                    select_query:
+                            `SELECT * FROM tab_contract, tab_customer WHERE tab_contract.GUID_customer = ${data.GUID}`
+                },
+                click: (param) => application.open("PAGE_CUSTOMER_CONTRACT_EQUIPMENT", param)
+            })
         };
         page.addAll(controls);
     }

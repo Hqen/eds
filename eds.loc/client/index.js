@@ -67,9 +67,9 @@ function open_page_prk()
 
 function add_header_and_footer(main) {
     topPanel.draw();
-    document.body.insertBefore(topPanel.element, main);
+    document.body.insertBefore(topPanel._element, main);
     foot.draw();
-    document.body.appendChild(foot.element);
+    document.body.appendChild(foot._element);
 
 }
 

@@ -9,7 +9,7 @@ class footer extends control {
     draw() {
         let tm = new timer();
         tm.draw();
-        this._element = this.create('footer', {}, tm.element);
+        this._element = this.create('footer', {}, tm._element);
     }
 }
 export default footer;

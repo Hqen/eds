@@ -17,10 +17,10 @@ export class data_table extends control {
     draw() {
         this.fill_table();
         let name = new label(this._name, true);//this.create('span', {}, this._name);
-        let but = new button(this._button_text, true, () => this._click({GUID: undefined}));
+        let but = new button(this._button_text, true, () => this._click({}));
         name.draw();
         but.draw();
-        let container = this.create('div', {}, name.element, but.element);
+        let container = this.create('div', {}, name._element, but._element);
         this._element = this.create(
             'div',
             {style:"display:grid", className:"data_table"},
@@ -67,9 +67,9 @@ export class data_table extends control {
     add_item(prototype, table_item_data) {
         let ti = new data_table_item(prototype, table_item_data);
         ti.draw();
-        ti.element.onclick = () => this._click({GUID: ti.GUID});
-        this._table_items.push(ti.element);
+        ti._element.onclick = () => this._click(ti._data);
+        this._table_items.push(ti._element);
         if (this._element !== undefined)
-            this._element.appendChild(ti.element);
+            this._element.appendChild(ti._element);
     }
 }

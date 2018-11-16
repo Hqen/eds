@@ -33,7 +33,7 @@ export class data_table_item extends control{
                     this.create(
                         'div',
                         {},
-                        name, data.element
+                        name, data._element
                 ));
             //}
         }

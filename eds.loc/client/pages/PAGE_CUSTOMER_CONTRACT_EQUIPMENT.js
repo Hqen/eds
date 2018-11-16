@@ -6,8 +6,8 @@ import label from "../controls/label.js";
 export function PAGE_CUSTOMER_CONTRACT_EQUIPMENT() {
 
     let page = {
-        page_name: "PAGE_CUSTOMER_LIST",
-        caption: "Список объектов",
+        page_name: "PAGE_CUSTOMER_CONTRACT_EQUIPMENT",
+        caption: "Список котрактов",
         back_button: true,
     };
 

@@ -23,11 +23,11 @@ class top_panel extends control {
             this.backElement = this.create('button', {}, 'back');
         m.draw();
         sp.draw();
-        this.search_panel = sp.element;
+        this.search_panel = sp._element;
         this.container = this.create(
             'div',
             {},
-            m.element,
+            m._element,
             this.syncElem, this.captionElem, this.backElement
         );
         //TODO поменять местоми кнопки на адекватном макете

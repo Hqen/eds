@@ -26,6 +26,6 @@ export class managed_data_memo extends control{
         dm._placeholder = this._placeholder;
         this.edit_button = new button("Изменить", true, edit, dm, this);
         this._element = this.create('div', {},
-            label.element, this.edit_button.element, dm);
+            label._element, this.edit_button._element, dm);
     }
 }

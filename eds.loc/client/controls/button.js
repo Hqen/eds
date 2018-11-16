@@ -25,9 +25,19 @@ class button extends control {
         if (this._element !== undefined)
             this._element.textContent = this._caption;
     }
+
     get caption() {
         return this._caption;
     }
+
+    set enable(val) {
+        this._isVisible = 'visible';
+        if (val === false)
+            this._isVisible = 'hidden';
+        this._element.style.visibility = this._isVisible;
+    }
+
+
 }
 
 export default button;

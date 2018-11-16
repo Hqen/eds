@@ -5,9 +5,9 @@ import data_memo from "../controls/data_memo.js";
 import {data_table} from "../controls/data_table.js";
 
 // PAGE_CUSTOMER_LIST();
-export function PAGE_CUSTOMER_LIST() {
+export function PAGE_CUSTOMER_EQUIPMENT() {
     let page = {
-        page_name: "PAGE_CUSTOMER_LIST",
+        page_name: "PAGE_CUSTOMER_EQUIPMENT",
         caption: "Список объектов",
         back_button: true,
         search: ["tab_customer.title", "tab_customer.address", "tab_customer.town"]
@@ -16,9 +16,11 @@ export function PAGE_CUSTOMER_LIST() {
     application.registryPage(page, init);
     function init(page, data) {
         let controls = {
+            label: new label("Название заказчика", true),
+            label2: new label(data.data.GUID),
             input: new data_memo(
-               "Список всех объектов. Нажмите на нужный, чтобы посмотреть подробности... Или добавьте новый",
-               false
+                "Список всех объектов. Нажмите на нужный, чтобы посмотреть подробности... Или добавьте новый",
+                false
             ),
             dt: new data_table({
                 name: "Список объектов",

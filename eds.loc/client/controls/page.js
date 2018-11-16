@@ -22,7 +22,7 @@ class page extends control {
     //Добавляет контролы на страницу
     draw() {
         Object.keys(this._data).forEach(key => {
-            this.dad.appendChild(this._data[key].element);
+            this.dad.appendChild(this._data[key]._element);
         });
     }
 
