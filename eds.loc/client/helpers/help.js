@@ -45,8 +45,36 @@ export  function update_table(tab_name, names, data) {
             query_type:"update",
             record: normal_data
         };
-        alasql(`INSERT INTO client_transact VALUES ${vals}`);
+        alasql(`INSERT INTO client_transact VALUES ${objectToString(vals)}`);
     }
+}
+
+export function objectToString(obj) {
+    let res = "";
+    if (Object.keys(obj).length === 0)
+        return;
+    for (let i in obj)
+        res += `${i}:${obj[i]},`
+    return res.slice(0, res.length - 1);
+}
+
+export function stringToObject(str) {
+    if (str.length === undefined)
+        return;
+    let a = str.split(',').map(x=> x.split(':'));
+    let obj = {};
+    for (let i of a) {
+        obj = {
+            ...obj,
+            [i[0]]: i[1]
+        }
+    }
+    for (let i in obj) {
+        let p = Number(obj[i]);
+        if (!isNaN(p))
+            obj[i] = p;
+    }
+    return obj;
 }
 
 export async function get_AJAX_JSON(type, destination, req, callback) {

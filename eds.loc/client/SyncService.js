@@ -12,7 +12,7 @@ class SyncService {
     }
     async run() {
         let c = await this.update_tables();
-        let sync_time = 18000;//system.
+        let sync_time = system.sync_delay;//system.
         // this._status = "RUN";
         setTimeout(this.update_tables(), sync_time);
 
@@ -57,7 +57,7 @@ class SyncService {
                 {
                     mail: system.mail,
                     md_encryption_seed: system.encryption_seed,
-                    count: 50,
+                    count: system.sync_record_count,
                     last_GUID: last_GUID
                 },
                 'GET'
@@ -104,19 +104,24 @@ class SyncService {
 
     send_client_record() {
         this.transact(
-            () => {
-                let GUID_records = alasql("SELECT * FROM client_transact LIMIT 1");
+            async () => {
+                let records = alasql("SELECT * FROM client_transact LIMIT 1");
 
-                return fetch(requestTo(
+                let res = await fetch(requestTo(
                     'put_table_data.php',
                     {
                         mail: system.mail,
                         md_encryption_seed: system.encryption_seed,
-                        count: 50,
-                        GUID_records: GUID_records
+                        count: system.sync_record_count,
+                        query_type: records[0].query_type,
+                        GUID_records: records[0].GUID_records
                     },
                     'POST'
                 ));
+                let r = await res.json();
+                if (r.error === 0) {
+                    alasql("DELETE FROM client_transact WHERE GUID=" +)
+                }
             }
         );
     }

@@ -25,7 +25,7 @@ let system = {
     font_size_label : "11pt",//TODO in arhitect type - number
     max_data_records : 60,
     sync_record_count : 20,
-    sync_delay : 180,
+    sync_delay : 180000,
     max_error_records : 200,
 };
 //system импортируется поэтому не нужно его передавать в функцию

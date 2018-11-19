@@ -10,23 +10,23 @@ import {readSystem, system, writeSystem} from "./system.js";
 import {create_database} from "./database.js";
 // import {getPageTest} from "./test/page_test.js";
 
-//экспорт объектов, которые будут использоваться вне этого скрипта
-export let error_log = new ErrorLog();
-export let application = new Application();
-
 alasql('CREATE localStorage DATABASE IF NOT EXISTS lsdb');
+
 alasql('ATTACH localStorage DATABASE lsdb');
 alasql('USE lsdb');
 //export let alasql = alasql.databases['alasql'];
 //alasql = alasql;
 //window.db = alasql;
+create_database();
+
+//экспорт объектов, которые будут использоваться вне этого скрипта
+export let error_log = new ErrorLog();
+export let application = new Application();
+export let topPanel = new top_panel();
+let foot = new footer();
 
 //Регистрация всех страничек
 register_all_page();
-create_database();
-export let topPanel = new top_panel();
-
-let foot = new footer();
 open_page_start();
 //open_page_start();
 //TODO Проверка на заполненность систEма
