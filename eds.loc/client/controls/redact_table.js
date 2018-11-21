@@ -54,20 +54,22 @@ export class redact_table extends control{
     }
 
     _save_button_click() {
-        this._enabled_buttons(false);
         if (this._table_items[0] === undefined) {
             alert("Как то всё слишком странно");
             return;
         }
         let texts = {};
-        for (let item in this._data_labels)
+        for (let item in this._data_labels) {
             texts = {
                 ...texts,
-                [item] : this._data_labels[item]._element.value
-        };
+                [item]: this._data_labels[item]._element.value
+            };
+        }
         texts.GUID = this._data.data.GUID;
-        for (let i of this._insert_queries)
+        for (let i of this._insert_queries) {
             i(texts);
+        }
+        this._enabled_buttons(false);
     }
 
     _edit_button_click() {

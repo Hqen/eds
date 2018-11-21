@@ -300,5 +300,11 @@ export function create_database() {
         "  `is_enable` int(11) NOT NULL,\n" +
         "  PRIMARY KEY (`GUID`)\n" +
         ") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n");
-
+    alasql("CREATE TABLE IF NOT EXISTS `client_transact` (\n" +
+        "  `ID` int(11) NOT NULL,\n" +
+        "  `GUID` char(36) NOT NULL,\n" +
+        "  `table_name` char(25) NOT NULL,\n" +
+        "  `query_type` char(25) NOT NULL,\n" +
+        "  `GUID_record` char(255) NOT NULL\n" +
+        ") ENGINE=InnoDB DEFAULT CHARSET=utf8;\n")
 }

@@ -1,6 +1,6 @@
-import {application} from "../index";
-import data_memo from "../controls/data_memo";
-import {data_table} from "../controls/data_table";
+import {application} from "../index.js";
+import data_memo from "../controls/data_memo.js";
+import {data_table} from "../controls/data_table.js";
 import label from "../controls/label.js";
 import data_label from "../controls/data_label.js";
 

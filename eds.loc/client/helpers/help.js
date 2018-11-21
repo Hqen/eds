@@ -27,25 +27,21 @@ export  function update_table(tab_name, names, data) {
         alasql(`INSERT INTO client_transact VALUES ${vals}`);
     }
     else {
-        let guid = "";
-        let str = "";
-        for (let i in normal_data) {
-            if (i === "GUID")
-                guid = `${i}=${normal_data[i]}`;
-            else
-                str += `${i}=${normal_data[i]},`;
-        }
+        let d = {...normal_data};
+        let guid = d.GUID;
+        delete d.GUID;
+        let str = objectToString(d);
         if (str === undefined) {
             alert('Нет данных! Но скорее всего вы не увидите это сообщение');
             return;
         }
-        str = str.slice(0, str.length - 1);
-        alasql(`UPDATE ${tab_name} set ${str} WHERE ${guid}`);
+        alasql(`UPDATE ${tab_name} set ${str} WHERE GUID=${guid}`);
         let vals = {
             query_type:"update",
             record: normal_data
         };
-        alasql(`INSERT INTO client_transact VALUES ${objectToString(vals)}`);
+        vals.record = objectToString(vals.record);
+        alasql(`INSERT INTO client_transact VALUES (${vals})`);
     }
 }
 
@@ -54,14 +50,14 @@ export function objectToString(obj) {
     if (Object.keys(obj).length === 0)
         return;
     for (let i in obj)
-        res += `${i}:${obj[i]},`
+        res += `${i}='${obj[i]}',`
     return res.slice(0, res.length - 1);
 }
 
 export function stringToObject(str) {
     if (str.length === undefined)
         return;
-    let a = str.split(',').map(x=> x.split(':'));
+    let a = str.replace(/[']/g, '').split(',').map(x=> x.split('='));
     let obj = {};
     for (let i of a) {
         obj = {

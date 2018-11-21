@@ -3,6 +3,7 @@ import {get_AJAX_JSON} from "./helpers/help.js";
 import {system} from "./system.js";
 import requestTo from "./helpers/Requests.js";
 import {topPanel} from "./index.js";
+import {stringToObject} from "./helpers/help";
 
 class SyncService {
     constructor(){
@@ -46,7 +47,7 @@ class SyncService {
     sync_server_transact() {
         return this.transact(
         async () => {
-            let GUID = alasql("SELECT TOP 1 GUID FROM server_transact ORDER BY DESC");
+            let GUID = alasql("SELECT TOP 1 GUID FROM server_transact ORDER BY DESK");
             let last_GUID;
             if (GUID.length === 0)
                 last_GUID = 0;
@@ -96,7 +97,7 @@ class SyncService {
     //Перенос из локального транзакта в локальные таблички
     get_server_record() {
         return this.transact(
-            () => {
+            async () => {
 
             }
         );
@@ -105,22 +106,22 @@ class SyncService {
     send_client_record() {
         this.transact(
             async () => {
-                let records = alasql("SELECT * FROM client_transact LIMIT 1");
-
+                let data = alasql("SELECT * FROM client_transact LIMIT 1")[0];
+                data.record = stringToObject(data.record);
                 let res = await fetch(requestTo(
                     'put_table_data.php',
                     {
                         mail: system.mail,
                         md_encryption_seed: system.encryption_seed,
                         count: system.sync_record_count,
-                        query_type: records[0].query_type,
-                        GUID_records: records[0].GUID_records
+                        query_type: data.query_type,
+                        GUID_records: data.record
                     },
                     'POST'
                 ));
                 let r = await res.json();
                 if (r.error === 0) {
-                    alasql("DELETE FROM client_transact WHERE GUID=" +)
+                    alasql("DELETE FROM client_transact WHERE GUID=" + data.GUID)
                 }
             }
         );
@@ -134,12 +135,10 @@ class SyncService {
     //Возвращает json парсеный
     async transact(callback) {
         this._status = "RUN";
-        let q = callback();
-        //let res = await q.json();
+        callback();
         console.log(this.status);
         this._last_run = Date();
         this._status = "IDLE";
-        //return res;
     }
 }
 

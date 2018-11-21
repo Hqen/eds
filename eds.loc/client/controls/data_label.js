@@ -27,6 +27,11 @@ class  data_label extends label {
         this._field_state = val;
         if (this._element !== undefined) {
             let old = Object.assign({}, this);
+            if (this._field_state)
+                this.text = old._element.value;
+            else
+                this._text = old._element.textContent;
+
             this.draw();
             old._element.parentNode.replaceChild(this._element, old._element);
         }
