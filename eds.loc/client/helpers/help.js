@@ -5,9 +5,34 @@ import {application} from "../index.js";
 //через ":" идут данные, которые заменяли в insert через as
 // т.к. выборка идёт из вех даных select'a "псевдоним:ключ
 //names: 'new_GUID:GUID, is_delete, time_update, title, town, address'
-export  function update_table(tab_name, names, data) {
+export  function update_table(tab_name, names, data, query_type) {
+    if (data === undefined || Object.keys(data).length === 0) {
+        alert('Нет данных! Но скорее всего вы не увидите это сообщение');
+        return;
+    }
+    let normal_data = normalize_data(data, names);
+    let vals = {};
+    if (query_type === "delete") {
+        alasql(`DELETE FROM ${tab_name} WHERE GUID = ${normal_data.GUID}`);
+        vals.query_type = "delete";
+    } else if (normal_data.GUID === undefined) {
+        normal_data.GUID = new_GUID();
+        alasql(`INSERT INTO ${tab_name} VALUES ${normal_data}`);
+        vals.query_type = "replace";
+    }
+    else {
+        let d = {...normal_data};
+        delete d.GUID;
+        alasql(`UPDATE ${tab_name} set ${objectToString(d)} WHERE GUID=${normal_data.GUID}`);
+        vals.query_type = "update";
+    }
+    vals.record = objectToString(normal_data);
+    alasql(`INSERT INTO client_transact VALUES (${vals})`);
+}
+
+function normalize_data(data, names) {
     let normal_data = {};
-    let n = names.replace(/\s+/g,'').split(',').map(x=>x.split(':'));
+    let n = names.replace(/\s+/g, '').split(',').map(x => x.split(':'));
     //принимаем массив ключей объекта,
     // если второй элемент существует,
     // то ключ нового объекта будет этим элементом
@@ -16,32 +41,6 @@ export  function update_table(tab_name, names, data) {
             ...normal_data,
             [i[1] !== undefined ? i[1] : i[0]]: data[i[0]]
         }
-    }
-    if (normal_data.GUID === undefined) {
-        normal_data.GUID = new_GUID();
-        alasql(`INSERT INTO ${tab_name} VALUES ${normal_data}`);
-        let vals = {
-            query_type:"replace",
-            record: normal_data
-        };
-        alasql(`INSERT INTO client_transact VALUES ${vals}`);
-    }
-    else {
-        let d = {...normal_data};
-        let guid = d.GUID;
-        delete d.GUID;
-        let str = objectToString(d);
-        if (str === undefined) {
-            alert('Нет данных! Но скорее всего вы не увидите это сообщение');
-            return;
-        }
-        alasql(`UPDATE ${tab_name} set ${str} WHERE GUID=${guid}`);
-        let vals = {
-            query_type:"update",
-            record: normal_data
-        };
-        vals.record = objectToString(vals.record);
-        alasql(`INSERT INTO client_transact VALUES (${vals})`);
     }
 }
 

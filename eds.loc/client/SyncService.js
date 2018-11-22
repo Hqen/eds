@@ -47,12 +47,10 @@ class SyncService {
     sync_server_transact() {
         return this.transact(
         async () => {
-            let GUID = alasql("SELECT TOP 1 GUID FROM server_transact ORDER BY DESK");
+            //TODO Синтаксическая ошибка в билиотеке нужен DESC
+            let GUID = alasql("SELECT TOP 1 GUID FROM server_transact ORDER BY DESK")[0].GUID;
             let last_GUID;
-            if (GUID.length === 0)
-                last_GUID = 0;
-            else
-                last_GUID = GUID;
+            last_GUID = GUID === undefined ? 0 : GUID;
             let record_count_fetch = await fetch(requestTo(
                 'get_sync_volume.php',
                 {
@@ -66,7 +64,7 @@ class SyncService {
 
             let rc = await record_count_fetch.json();
             if (rc.record_count === 0) {
-                topPanel.sync_prog = 100;
+                // topPanel.sync_prog = 100;
                 return 0;
             } else {
                 let rCount = rc.record_count;
@@ -85,7 +83,7 @@ class SyncService {
                     let data = await sd.json();
                     last_GUID = data.records[data.record_count - 1];
                     rCount -= data.records.record_count;//возможно надо убрать минус
-                    alasql(`INSERT INTO server_transact VALUES ?`, [data["records"]])
+                    alasql(`INSERT INTO server_transact VALUES ?`, [data["records"]]);
                 }
             }
             // let body = `mail=${system.mail}&md_encryption_seed=${system.encryption_seed}&last_GUID=${GUID}&count=30`;
@@ -96,11 +94,14 @@ class SyncService {
 
     //Перенос из локального транзакта в локальные таблички
     get_server_record() {
-        return this.transact(
-            async () => {
+        return this.transact(async () => {
+            let count;
+            while ((count = alasql(`SELECT COUNT(GUID) FROM server_transact`)[0]["COUNT(GUID)"]) > 0) {
 
+                topPanel.sync_prog =
             }
-        );
+            topPanel.sync_prog = 100;
+        });
     }
 
     send_client_record() {

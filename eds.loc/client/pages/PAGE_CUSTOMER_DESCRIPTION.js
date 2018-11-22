@@ -23,9 +23,7 @@ export function PAGE_CUSTOMER_DESCRIPTION() {
                 tab: {
                     select_query: `SELECT * FROM tab_customer WHERE GUID = ${data.GUID}`,
                     insert_queries: [
-                        (data)=>update_table('tab_customer', 'GUID, is_delete, time_update, title, town, address', data),
-                        // `INSERT (GUID, is_delete, time_update, title, town, address) INTO tab_customer VALUE ?`,
-                        // `INSERT (GUID) INTO client_transact VALUE ?`
+                        (data, query_type)=>update_table('tab_customer', 'GUID, is_delete, time_update, title, town, address', data, query_type),
                     ],
                     select_prototype: {
                         title: 'Заголовок',
