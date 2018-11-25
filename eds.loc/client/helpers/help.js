@@ -11,20 +11,23 @@ export  function update_table(tab_name, names, data, query_type) {
         return;
     }
     let normal_data = normalize_data(data, names);
-    let vals = {};
+    let vals = {
+        tab_name: tab_name,
+        query_type: 'replace'
+    };
     if (query_type === "delete") {
         alasql(`DELETE FROM ${tab_name} WHERE GUID = ${normal_data.GUID}`);
-        vals.query_type = "delete";
+        // vals.query_type = "delete";
     } else if (normal_data.GUID === undefined) {
         normal_data.GUID = new_GUID();
         alasql(`INSERT INTO ${tab_name} VALUES ${normal_data}`);
-        vals.query_type = "replace";
+        // vals.query_type = "replace";
     }
     else {
         let d = {...normal_data};
         delete d.GUID;
         alasql(`UPDATE ${tab_name} set ${objectToString(d)} WHERE GUID=${normal_data.GUID}`);
-        vals.query_type = "update";
+        // vals.query_type = "update";
     }
     vals.record = objectToString(normal_data);
     alasql(`INSERT INTO client_transact VALUES (${vals})`);

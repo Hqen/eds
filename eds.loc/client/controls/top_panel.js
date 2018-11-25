@@ -64,5 +64,6 @@ class top_panel extends control {
             this.syncElem.textContent = this.sync_progress;
         }
     }
+
 }
 export default top_panel;

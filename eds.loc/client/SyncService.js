@@ -3,7 +3,8 @@ import {get_AJAX_JSON} from "./helpers/help.js";
 import {system} from "./system.js";
 import requestTo from "./helpers/Requests.js";
 import {topPanel} from "./index.js";
-import {stringToObject} from "./helpers/help";
+import {stringToObject} from "./helpers/help.js";
+import {objectToString} from "./helpers/help";
 
 class SyncService {
     constructor(){
@@ -26,9 +27,11 @@ class SyncService {
         this.sync_server_transact();
         let count = alasql("SELECT COUNT(GUID) FROM server_transact");
         if (count[0]["COUNT(GUID)"] !== 0)
-
+            this.get_server_record();
         console.log();
-
+        while () {
+            this.send_client_record();
+        }
             //alasql(`INSERT INTO server_transact VALUES ?`, [res["records"]]);
 
     }
@@ -36,7 +39,7 @@ class SyncService {
     insert_local() {
         let record = alasql("SELECT * FROM server_transact LIMIT 1");
         let tn = record[0]["table_name"];
-        let records = record
+        let records = record;
         alasql(`SELECT * FROM ${tn} VALUES ?`, []);
     }
 
@@ -97,8 +100,38 @@ class SyncService {
         return this.transact(async () => {
             let count;
             while ((count = alasql(`SELECT COUNT(GUID) FROM server_transact`)[0]["COUNT(GUID)"]) > 0) {
+                //TODO Синтаксическая ошибка
+                let first = alasql(`SELECT TOP 1 * FROM server_transact ORDER BY DESK`)[0];
+                let conv = {...first};
+                conv.record = stringToObject(first.record);
+                //param т.к. сервер принимает его как аргумент пост запроса
+                let json = JSON.stringify({conv});
+                fetch(requestTo('put_table_data.php',
+                    {
+                        mail: system.mail,
+                        md_encryption_seed: system.encryption_seed,
+                        count: system.sync_record_count,
+                    },
+                    'GET'
+                ));
+                let data_fetch = fetch(requestTo('put_table_data.php', json, 'POST'));
+                let data = await data_fetch.json();
 
-                topPanel.sync_prog =
+                if (data.record.GUID !== undefined) {
+                    if (data.query_type === "delete")
+                        alasql(`DELETE * FROM ${data.record.tab_name} WHERE GUID=${data.record.GUID}`);
+                    else if (data.query_type === "update") {
+                        let d = {...data.record};
+                        delete d.GUID;
+                        alasql(`UPDATE ${data.record.tab_name} set ${objectToString(d)} WHERE GUID=${data.record.GUID}`);
+                    }
+                    else if (data.query_type === "replace") {
+                        alasql(`INSERT INTO ${data.record.tab_name} VALUES {${objectToString(data.record)}`)
+                    }
+
+                    alasql(`DELETE * FROM server_transact WHERE GUID=${first.GUID}`);
+                    topPanel.sync_prog = topPanel.sync_prog + 100 % count;
+                }
             }
             topPanel.sync_prog = 100;
         });
