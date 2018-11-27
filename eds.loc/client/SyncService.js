@@ -3,8 +3,7 @@ import {get_AJAX_JSON} from "./helpers/help.js";
 import {system} from "./system.js";
 import requestTo from "./helpers/Requests.js";
 import {topPanel} from "./index.js";
-import {stringToObject} from "./helpers/help.js";
-import {objectToString} from "./helpers/help";
+import {stringToObject, objectToString} from "./helpers/help.js";
 
 class SyncService {
     constructor(){
@@ -24,16 +23,15 @@ class SyncService {
     //TODO Работает раз в 3 минуты
     //TODO Вызывается до того как загрузится страница
     update_tables() {
+        //if (alasql("SELECT COUNT(GUID) FROM server_transact")[0]["COUNT(GUID)"] > 0)
         this.sync_server_transact();
-        let count = alasql("SELECT COUNT(GUID) FROM server_transact");
-        if (count[0]["COUNT(GUID)"] !== 0)
+        if (alasql("SELECT COUNT(GUID) FROM server_transact")[0]["COUNT(GUID)"] > 0)
             this.get_server_record();
         console.log();
-        while () {
+
+        while ((alasql("SELECT COUNT(GUID) FROM client_transact")[0]["COUNT(GUID)"]) > 0) {
             this.send_client_record();
         }
-            //alasql(`INSERT INTO server_transact VALUES ?`, [res["records"]]);
-
     }
 
     insert_local() {
@@ -50,10 +48,12 @@ class SyncService {
     sync_server_transact() {
         return this.transact(
         async () => {
+
             //TODO Синтаксическая ошибка в билиотеке нужен DESC
-            let GUID = alasql("SELECT TOP 1 GUID FROM server_transact ORDER BY DESK")[0].GUID;
-            let last_GUID;
-            last_GUID = GUID === undefined ? 0 : GUID;
+            let pre_GUID = alasql("SELECT TOP 1 GUID FROM server_transact ORDER BY DESK");
+            pre_GUID = pre_GUID[0] === undefined ? 0 : pre_GUID[0];
+            let GUID = pre_GUID.GUID === undefined ? 0 : pre_GUID.GUID;
+            let last_GUID = GUID === undefined ? 0 : GUID;
             let record_count_fetch = await fetch(requestTo(
                 'get_sync_volume.php',
                 {
